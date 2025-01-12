@@ -1,17 +1,18 @@
-
-import './App.css'
-import TableWrapper from './components/table/table'
-import { Button } from './components/ui/button'
-import { Table } from './components/ui/table'
+import "./App.css";
+import { CarouselDemo } from "./components/demo/CarouselDemo";
+import { Button } from "./components/ui/button";
 
 export default function App() {
   return (
-    <>
-    <h1 className="text-3xl font-bold  text-center text-red-500">
-      Payment Gateway
-    </h1>
-      <Button>Testing</Button>
-      <TableWrapper/>
-    </>
-  )
+    <div className="flex flex-col items-center min-h-screen">
+      <h1 className="text-3xl font-bold text-center text-red-500">
+        Payment Gateway
+      </h1>
+
+      <div className="mx-auto">
+        <Button>Testing</Button>
+        <CarouselDemo />
+      </div>
+    </div>
+  );
 }
