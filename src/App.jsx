@@ -1,5 +1,6 @@
 import "./App.css";
 import { CarouselDemo } from "./components/demo/CarouselDemo";
+import { Testing } from "./components/demo/testing";
 import { Button } from "./components/ui/button";
 
 export default function App() {
@@ -9,6 +10,9 @@ export default function App() {
         Payment Gateway
       </h1>
       <Button>Testing</Button>
+
+      <Testing />
+
     </>
   );
 }
