@@ -9,7 +9,6 @@ export default function App() {
         Payment Gateway
       </h1>
       <Button>Testing</Button>
-      <TableWrapper />
     </>
   );
 }
