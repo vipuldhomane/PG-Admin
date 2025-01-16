@@ -1,23 +1,57 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { CarouselDemo } from "./components/demo/CarouselDemo";
-import { Testing } from "./components/demo/testing";
-import { Button } from "./components/ui/button";
-import { SignUp } from "./pages/SignUp";
+import { lazy, Suspense, useState } from "react";
 import { AdminDashbord } from "./pages/AdminDashbord";
-import { LogIn } from "./pages/LogIn";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignUpPage = lazy(() => import("./pages/LoginPage"));
 
 export default function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
   return (
     <>
-      <h1 className="text-3xl font-bold  text-center text-red-500">
-        Payment Gateway
-      </h1>
-      <Button>Testing</Button>
       <Routes>
         {/* Auth Routes */}
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <LoginPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <SignUpPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/*"
+          element={
+            <>
+              <Sidebar
+                isMobileMenuOpen={isMobileMenuOpen}
+                onClose={() => setIsMobileMenuOpen(false)}
+              />
+              <Navbar onMenuClick={toggleMobileMenu} />
+
+              <Suspense fallback={<div>Loading your dashboard...</div>}>
+                <Routes>
+                  <Route path="/admin" element={<AdminDashbord />} />
+                  <Route path="*" element={<div>Not Found</div>} />
+                </Routes>
+              </Suspense>
+            </>
+          }
+        />
       </Routes>
     </>
   );
