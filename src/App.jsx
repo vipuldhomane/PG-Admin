@@ -4,6 +4,7 @@ import { lazy, Suspense, useState } from "react";
 import { AdminDashbord } from "./pages/AdminDashbord";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignUpPage = lazy(() => import("./pages/SignUp"));
@@ -39,6 +40,14 @@ export default function App() {
           element={
             <Suspense fallback={<div>Loading...</div>}>
               <SignUpDetailsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ForgotPasswordPage />
             </Suspense>
           }
         />
