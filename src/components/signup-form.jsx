@@ -1,24 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
 import { OTPForm } from "./otp-form";
+import axios from "axios";
 
 export function SignUpForm({ className, ...props }) {
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    username: "",
-    number: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
-  const [showOtpForm, setShowOtpForm] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [merchantId, setMerchantId] = useState("");
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -26,15 +25,34 @@ export function SignUpForm({ className, ...props }) {
       ...prevData,
       [id]: value,
     }));
+    if (id === "password" && value.length < 8) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "Password should be at least 8 characters.",
+      }));
+    } else if (id === "password") {
+      setErrors((prevErrors) => {
+        const { password, ...rest } = prevErrors;
+        return rest;
+      });
+    }
+    if (id === "confirmPassword" && value !== formData.password) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: "Passwords do not match.",
+      }));
+    } else if (id === "confirmPassword") {
+      setErrors((prevErrors) => {
+        const { confirmPassword, ...rest } = prevErrors;
+        return rest;
+      });
+    }
   };
 
   const validate = () => {
     const newErrors = {};
-    if (formData.number.length < 10) {
-      newErrors.number = "Phone number should be at least 10 digits.";
-    }
-    if (formData.password.length < 6) {
-      newErrors.password = "Password should be at least 6 characters.";
+    if (formData.password.length < 8) {
+      newErrors.password = "Password should be at least 8 characters.";
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
@@ -42,30 +60,45 @@ export function SignUpForm({ className, ...props }) {
     return newErrors;
   };
 
+  const isFormValid = () => {
+    return (
+      formData.email &&
+      formData.password &&
+      formData.confirmPassword &&
+      formData.password === formData.confirmPassword
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setIsSubmitting(false);
       return;
     }
     setErrors({});
-    toast.success("Form submitted successfully!");
-    setShowOtpForm(true);
-    // Call the API with formData
-    // try {
-    //   const response = await fetch("/api/signup", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const result = await response.json();
-    //   console.log(result);
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/merchant-routes/Merchant_signup",
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
+      if (response.status === 200) {
+        setMerchantId(response.data.merchantId);
+        toast.success("OTP Sent successfully!");
+        setShowOtpForm(true);
+      } else {
+        toast.error("Signup failed");
+      }
+    } catch (error) {
+      toast.error("Error during signup");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -76,50 +109,9 @@ export function SignUpForm({ className, ...props }) {
         {...props}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Sign Up to your account</h1>
+          <h1 className="text-2xl font-bold">Enter your details</h1>
         </div>
         <div className="grid gap-6">
-          <div className="grid gap-2">
-            <Label htmlFor="firstname">First Name</Label>
-            <Input
-              id="firstname"
-              type="text"
-              value={formData.firstname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="lastname">Last Name</Label>
-            <Input
-              id="lastname"
-              type="text"
-              value={formData.lastname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="number">Number</Label>
-            <Input
-              id="number"
-              type="number"
-              value={formData.number}
-              onChange={handleChange}
-              required
-            />
-            {errors.number && <p className="text-red-500">{errors.number}</p>}
-          </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -155,18 +147,36 @@ export function SignUpForm({ className, ...props }) {
             {errors.confirmPassword && (
               <p className="text-red-500">{errors.confirmPassword}</p>
             )}
+            {!errors.confirmPassword && formData.confirmPassword && (
+              <p className="text-green-500">Passwords match</p>
+            )}
           </div>
-          <Button type="submit" className="w-full">
-            Sign Up
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={!isFormValid() || showOtpForm}
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : showOtpForm
+              ? "OTP Sent"
+              : "Sign Up"}
           </Button>
         </div>
       </form>
-      {showOtpForm && <OTPForm onSubmit={() => setShowOtpForm(false)} />}
       <div className="text-center text-sm ">
         Already have an account?{" "}
         <a href="/login" className="underline underline-offset-4">
           Log in
         </a>
+      </div>
+      <div className="mt-10">
+        {showOtpForm && (
+          <OTPForm
+            merchantId={merchantId}
+            onSubmit={() => setShowOtpForm(false)}
+          />
+        )}
       </div>
     </>
   );

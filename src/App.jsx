@@ -6,7 +6,8 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 
 const LoginPage = lazy(() => import("./pages/LoginPage"));
-const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const SignUpPage = lazy(() => import("./pages/SignUp"));
+const SignUpDetailsPage = lazy(() => import("./pages/SignUpDetails"));
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,6 +31,14 @@ export default function App() {
           element={
             <Suspense fallback={<div>Loading...</div>}>
               <SignUpPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/signupdetails"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <SignUpDetailsPage />
             </Suspense>
           }
         />
