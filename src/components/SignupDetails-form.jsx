@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
+import AuthService from "@/services/AuthService";
 
 export function SignUpDetailsForm({ className, ...props }) {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ export function SignUpDetailsForm({ className, ...props }) {
   });
 
   const [errors, setErrors] = useState({});
-  const [showOtpForm, setShowOtpForm] = useState(true);
+  // const [showOtpForm, setShowOtpForm] = useState(true);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,23 +46,15 @@ export function SignUpDetailsForm({ className, ...props }) {
       return;
     }
     setErrors({});
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     try {
-      const response = await axios.post(
-        "http://localhost:8000/merchant-routes/add_Merchant_Info",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        toast.success("Signed up successfully!");
-        navigate("/login");
-      } else {
-        toast.error("Signup failed");
-      }
+      const response = await AuthService.addMerchantInfo(formData);
+      // if (response.status === 200) {
+      toast.success("Signed up successfully!");
+      navigate("/login");
+      // } else {
+      //   toast.error("Signup failed");
+      // }
     } catch (error) {
       toast.error("Error during signup");
     }

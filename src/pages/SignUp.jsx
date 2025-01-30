@@ -2,6 +2,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 
 // import { LoginForm } from "@/components/login-form";
 import { SignUpForm } from "@/components/Signup-form";
+// import SignupForm from "@/components/SignupForm";
 
 export default function SignUp() {
   return (
@@ -18,6 +19,7 @@ export default function SignUp() {
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <SignUpForm />
+            {/* <SignupForm /> */}
           </div>
         </div>
       </div>

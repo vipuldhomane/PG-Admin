@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthService from "@/services/AuthService";
 
 export function OTPForm({ onSubmit, merchantId }) {
   const [otp, setOtp] = useState("");
@@ -21,21 +22,15 @@ export function OTPForm({ onSubmit, merchantId }) {
       return;
     }
     try {
-      const response = await axios.post(
-        `http://localhost:8000/merchant-routes/merchant_Otp_verify/${merchantId}`,
-        {
-          otp,
-        }
-      );
-
-      if (response.data.message === "Email successfully verified") {
-        console.log(response.data);
-        localStorage.setItem("token", response.data.token);
+      const response = await AuthService.verifyOTP(merchantId, { otp });
+      if (response.message === "Email successfully verified") {
+        console.log(response.message);
+        localStorage.setItem("auth_token", response.token);
         toast.success("OTP verified successfully!");
         onSubmit();
         navigate("/signupdetails");
       } else {
-        toast.error("Invalid OTP");
+        // toast.error("Invalid OTP");
       }
     } catch (error) {
       toast.error("Error verifying OTP");

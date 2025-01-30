@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, Boxes, User, LogOut, HandCoins } from "lucide-react";
+import { AUTH_TOKEN } from "@/config/AppConfig";
 
 const Navbar = ({ onMenuClick }) => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Navbar = ({ onMenuClick }) => {
 
   const handleLogoutClick = async () => {
     setLoading(true);
-    // Simulate logout
+    localStorage.removeItem(AUTH_TOKEN);
     setTimeout(() => {
       setLoading(false);
       navigate("/login");

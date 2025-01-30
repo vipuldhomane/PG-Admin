@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
 import { OTPForm } from "./otp-form";
-import axios from "axios";
+// import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUserThunk } from "@/redux/slices/authSlice";
 
 export function SignUpForm({ className, ...props }) {
   const [formData, setFormData] = useState({
@@ -18,6 +20,8 @@ export function SignUpForm({ className, ...props }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
   const [merchantId, setMerchantId] = useState("");
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -80,22 +84,20 @@ export function SignUpForm({ className, ...props }) {
     }
     setErrors({});
     try {
-      const response = await axios.post(
-        "http://localhost:8000/merchant-routes/Merchant_signup",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-      if (response.status === 200) {
-        setMerchantId(response.data.merchantId);
+      const response = await dispatch(
+        signupUserThunk({ email: formData.email, password: formData.password })
+      ).unwrap();
+      console.log(response);
+
+      if (response.merchantId) {
+        setMerchantId(response.merchantId);
         toast.success("OTP Sent successfully!");
         setShowOtpForm(true);
       } else {
         toast.error("Signup failed");
       }
     } catch (error) {
-      toast.error("Error during signup");
+      // toast.error("Error during signup");
     } finally {
       setIsSubmitting(false);
     }
