@@ -7,7 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import axios from "axios";
+// import axios from "axios";
+import { useDispatch } from "react-redux";
+import AuthService from "@/services/AuthService";
 
 export default function ForgotPasswordPage() {
   const [formData, setFormData] = useState({ email: "" });
@@ -16,6 +18,7 @@ export default function ForgotPasswordPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -29,55 +32,45 @@ export default function ForgotPasswordPage() {
     setNewPassword(e.target.value);
   };
 
+  // Send OTP for password reset
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(
-        "http://localhost:8000/merchant-routes/forgotPassword",
-        formData
-      );
-      if (response.status === 200) {
-        toast.success("Password reset OTP sent!");
-        setOtpSent(true);
-      } else {
-        toast.error("Password reset failed");
-      }
+      const response = await AuthService.forgotPassword(formData);
+
+      toast.success("Password reset OTP sent!");
+      setOtpSent(true);
     } catch (error) {
       toast.error("Error during password reset");
     }
   };
 
+  // Submit OTP
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(
-        "http://localhost:8000/merchant-routes/verifyOtpForPasswordReset",
-        { email: formData.email, otp }
-      );
-      if (response.status === 200) {
-        toast.success("OTP verified successfully!");
-        setOtpVerified(true);
-      } else {
-        toast.error("OTP verification failed");
-      }
+      const response = await AuthService.verifyOtpForPasswordReset({
+        email: formData.email,
+        otp: otp,
+      });
+
+      toast.success("OTP verified successfully!");
+      setOtpVerified(true);
     } catch (error) {
       toast.error("Error during OTP verification");
     }
   };
 
+  // Reset with new password
   const handleNewPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.patch(
-        "http://localhost:8000/merchant-routes/resetPassword",
-        { email: formData.email, newPassword }
-      );
-      if (response.status === 200) {
-        toast.success("Password reset successfully!");
-        navigate("/login");
-      } else {
-        toast.error("Password reset failed");
-      }
+      const response = await AuthService.resetPassword({
+        email: formData.email,
+        newPassword,
+      });
+      toast.success("Password reset successfully!");
+      navigate("/login");
     } catch (error) {
       toast.error("Error during password reset");
     }

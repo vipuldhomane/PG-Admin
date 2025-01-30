@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logInUserThunk } from "@/redux/slices/authSlice";
+// import axios from "axios";
+// import AuthService from "@/services/AuthService";
+// import { AUTH_TOKEN } from "@/config/AppConfig";
 
 export function LoginForm({ className, ...props }) {
   const [formData, setFormData] = useState({
@@ -14,6 +18,8 @@ export function LoginForm({ className, ...props }) {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const { login } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -23,22 +29,22 @@ export function LoginForm({ className, ...props }) {
     }));
   };
 
+  // Login Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/merchant-routes/merchant_Login",
-        formData
-      );
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
+      const data = { email: formData.email, password: formData.password };
+
+      const response = await dispatch(logInUserThunk(data)).unwrap();
+
+      if (response.token) {
         toast.success("Logged in successfully!");
-        navigate("/dashboard");
+        navigate("/admin");
       } else {
-        toast.error("Login failed");
+        toast.error("Invalid login credentials!");
       }
     } catch (error) {
-      toast.error("Error during login");
+      toast.error("Something Went Wrong!");
     }
   };
 
