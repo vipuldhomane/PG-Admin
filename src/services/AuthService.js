@@ -1,13 +1,13 @@
 import { API_BASE_URL } from "@/config/AppConfig";
 import fetch from "@/interceptor/FetchInterceptor";
 
-// http://localhost:8000/merchant-routes/merchant_Login
+// http://localhost:8000/admin-routes/adminSignup
 const AuthService = {};
 
 //LogIn Handler
 AuthService.login = async function (data) {
   return fetch({
-    url: `${API_BASE_URL}/merchant-routes/merchant_Login`,
+    url: `${API_BASE_URL}/admin-routes/adminLogin`,
     method: "post",
     data: data,
   });
@@ -16,27 +16,7 @@ AuthService.login = async function (data) {
 // SignUp Handler
 AuthService.signup = async function (data) {
   return fetch({
-    url: `${API_BASE_URL}/merchant-routes/Merchant_signup`,
-    method: "post",
-    data: data,
-  });
-};
-
-//merchant-routes/merchant_Otp_verify/${merchantId}
-
-// merchant OTP verification Handler
-AuthService.verifyOTP = async function (merchantId, data) {
-  return fetch({
-    url: `${API_BASE_URL}/merchant-routes/merchant_Otp_verify/${merchantId}`,
-    method: "post",
-    data: data,
-  });
-};
-
-// Add Merchant info
-AuthService.addMerchantInfo = async function (data) {
-  return fetch({
-    url: `${API_BASE_URL}/merchant-routes/add_Merchant_Info`,
+    url: `${API_BASE_URL}/admin-routes/adminSignup`,
     method: "post",
     data: data,
   });
@@ -45,8 +25,8 @@ AuthService.addMerchantInfo = async function (data) {
 // Forgot Password
 AuthService.forgotPassword = async function (data) {
   return fetch({
-    url: `${API_BASE_URL}/merchant-routes/forgotPassword`,
-    method: "patch",
+    url: `${API_BASE_URL}/admin-routes/forgotPassword`,
+    method: "post",
     data: data,
   });
 };
@@ -54,8 +34,8 @@ AuthService.forgotPassword = async function (data) {
 // Forgot Password OTP verification
 AuthService.verifyOtpForPasswordReset = async function (data) {
   return fetch({
-    url: `${API_BASE_URL}/merchant-routes/verifyOtpForPasswordReset`,
-    method: "patch",
+    url: `${API_BASE_URL}/admin-routes/verifyOtp`,
+    method: "post",
     data: data,
   });
 };
@@ -63,7 +43,7 @@ AuthService.verifyOtpForPasswordReset = async function (data) {
 // Reset Password
 AuthService.resetPassword = async function (data) {
   return fetch({
-    url: `${API_BASE_URL}/merchant-routes/resetPassword`,
+    url: `${API_BASE_URL}/admin-routes/resetPassword`,
     method: "patch",
     data: data,
   });

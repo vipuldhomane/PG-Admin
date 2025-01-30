@@ -33,7 +33,7 @@ const Navbar = ({ onMenuClick }) => {
         <div className="hidden md:flex items-center gap-2">
           <HandCoins className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
-            Payment Gateway
+            PG Admin
           </span>
         </div>
 
@@ -43,7 +43,7 @@ const Navbar = ({ onMenuClick }) => {
             <User className="h-5 w-5 text-gray-700 dark:text-gray-300" />
           </div>
           <span className="hidden md:inline text-sm font-medium text-gray-900 dark:text-gray-100">
-            John Doe
+            Kurmato Admin
           </span>
 
           <button

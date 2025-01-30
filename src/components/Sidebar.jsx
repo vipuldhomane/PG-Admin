@@ -8,10 +8,10 @@ const Sidebar = ({ isMobileMenuOpen, onClose }) => {
   const currentPath = location.pathname;
 
   const menuItems = [
-    { icon: Bell, label: "Home", href: "/dashboard" },
-    { icon: Bell, label: "PayIn", href: "/payin" },
-    { icon: Bell, label: "PayOut", href: "/payout" },
-    { icon: Bell, label: "Settlement", href: "/settlement" },
+    { icon: Bell, label: "merchants", href: "/merchants" },
+    // { icon: Bell, label: "PayIn", href: "/payin" },
+    // { icon: Bell, label: "PayOut", href: "/payout" },
+    // { icon: Bell, label: "Settlement", href: "/settlement" },
   ];
 
   const sidebarClasses = cn(
@@ -27,9 +27,7 @@ const Sidebar = ({ isMobileMenuOpen, onClose }) => {
           <div className="flex items-center gap-2 mb-8">
             <HandCoins className="h-8 w-8 text-blue-400" />
 
-            <span className="text-xl font-bold text-white">
-              Payment Gateway
-            </span>
+            <span className="text-xl font-bold text-white">PG Admin</span>
           </div>
           <nav>
             {menuItems.map((item) => (

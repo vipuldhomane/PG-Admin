@@ -8,6 +8,7 @@ import { OTPForm } from "./otp-form";
 // import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUserThunk } from "@/redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export function SignUpForm({ className, ...props }) {
   const [formData, setFormData] = useState({
@@ -19,9 +20,9 @@ export function SignUpForm({ className, ...props }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
-  const [merchantId, setMerchantId] = useState("");
+
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -87,12 +88,11 @@ export function SignUpForm({ className, ...props }) {
       const response = await dispatch(
         signupUserThunk({ email: formData.email, password: formData.password })
       ).unwrap();
-      console.log(response);
 
-      if (response.merchantId) {
-        setMerchantId(response.merchantId);
-        toast.success("OTP Sent successfully!");
-        setShowOtpForm(true);
+      if (response) {
+        toast.success("Signup successful");
+        navigate("/login");
+        // setShowOtpForm(true);
       } else {
         toast.error("Signup failed");
       }
@@ -172,14 +172,14 @@ export function SignUpForm({ className, ...props }) {
           Log in
         </a>
       </div>
-      <div className="mt-10">
+      {/* <div className="mt-10">
         {showOtpForm && (
           <OTPForm
             merchantId={merchantId}
             onSubmit={() => setShowOtpForm(false)}
           />
         )}
-      </div>
+      </div> */}
     </>
   );
 }
