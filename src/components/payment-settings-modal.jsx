@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { PaymentSettingsForm } from "./payment-settings-form";
 
-export function PaymentSettingsModal() {
+export function PaymentSettingsModal({ merchantId, paymentId }) {
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (values) => {
@@ -30,7 +30,11 @@ export function PaymentSettingsModal() {
             Update your payment settings here. Click submit when you're done.
           </DialogDescription>
         </DialogHeader>
-        <PaymentSettingsForm onSubmit={handleSubmit} />
+        <PaymentSettingsForm
+          onSubmit={handleSubmit}
+          merchantId={merchantId}
+          paymentId={paymentId}
+        />
       </DialogContent>
     </Dialog>
   );

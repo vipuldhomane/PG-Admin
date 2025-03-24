@@ -1,5 +1,15 @@
 import React from "react";
-import { Bell, HandCoins } from "lucide-react";
+import {
+  Banknote,
+  Bell,
+  HandCoins,
+  LayoutDashboard,
+  Link2,
+  PiggyBank,
+  UserCog,
+  UsersRound,
+  Wallet,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/utils/cn";
 
@@ -8,10 +18,13 @@ const Sidebar = ({ isMobileMenuOpen, onClose }) => {
   const currentPath = location.pathname;
 
   const menuItems = [
-    { icon: Bell, label: "merchants", href: "/merchants" },
-    // { icon: Bell, label: "PayIn", href: "/payin" },
-    // { icon: Bell, label: "PayOut", href: "/payout" },
-    // { icon: Bell, label: "Settlement", href: "/settlement" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/" },
+    { icon: UsersRound, label: "Merchants", href: "/merchants" },
+    { icon: Wallet, label: "PayIn", href: "/payin" },
+    { icon: Banknote, label: "PayOut", href: "/payout" },
+    { icon: PiggyBank, label: "Settlement", href: "/settlement" },
+    { icon: Link2, label: "Payment API", href: "/payment-api" },
+    { icon: UserCog, label: "Profile", href: "/profile" },
   ];
 
   const sidebarClasses = cn(

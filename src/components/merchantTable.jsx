@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,100 +19,49 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const merchants = [
-  {
-    merchantId: 1,
-    ipAddress: "196.245.201.38",
-    firstName: null,
-    lastName: null,
-    username: null,
-    password: "$2b$10$JlRQ67uZVtAYs5Wr20v9ru5scdtOjikmSJbG.E7lrJQ2NKBBWRXte",
-    email: "alt.ho-1l15sis7i@yopmail.com",
-    phoneNumber: null,
-    country: null,
-    verifyEmail: true,
-    otp: null,
-    token: null,
-    businessName: null,
-    businessType: null,
-    status: "unverified",
-    createdAt: "2025-01-22T02:33:07.000Z",
-    updatedAt: "2025-01-22T02:33:07.000Z",
-    MerchantPaymentDetails: [],
-  },
-  {
-    merchantId: 1,
-    ipAddress: null,
-    firstName: null,
-    lastName: null,
-    username: null,
-    password: "$2b$10$JlRQ67uZVtAYs5Wr20v9ru5scdtOjikmSJbG.E7lrJQ2NKBBWRXte",
-    email: "alt.ho-1l15sis7i@yopmail.com",
-    phoneNumber: null,
-    country: null,
-    verifyEmail: true,
-    otp: null,
-    token: null,
-    businessName: null,
-    businessType: null,
-    status: "unverified",
-    createdAt: "2025-01-22T02:33:07.000Z",
-    updatedAt: "2025-01-22T02:33:07.000Z",
-    MerchantPaymentDetails: [],
-  },
-  {
-    merchantId: 1,
-    ipAddress: null,
-    firstName: null,
-    lastName: null,
-    username: null,
-    password: "$2b$10$JlRQ67uZVtAYs5Wr20v9ru5scdtOjikmSJbG.E7lrJQ2NKBBWRXte",
-    email: "alt.ho-1l15sis7i@yopmail.com",
-    phoneNumber: null,
-    country: null,
-    verifyEmail: true,
-    otp: null,
-    token: null,
-    businessName: null,
-    businessType: null,
-    status: "unverified",
-    createdAt: "2025-01-22T02:33:07.000Z",
-    updatedAt: "2025-01-22T02:33:07.000Z",
-    MerchantPaymentDetails: [],
-  },
-  {
-    merchantId: 1,
-    ipAddress: null,
-    firstName: null,
-    lastName: null,
-    username: null,
-    password: "$2b$10$JlRQ67uZVtAYs5Wr20v9ru5scdtOjikmSJbG.E7lrJQ2NKBBWRXte",
-    email: "alt.ho-1l15sis7i@yopmail.com",
-    phoneNumber: null,
-    country: null,
-    verifyEmail: true,
-    otp: null,
-    token: null,
-    businessName: null,
-    businessType: null,
-    status: "unverified",
-    createdAt: "2025-01-22T02:33:07.000Z",
-    updatedAt: "2025-01-22T02:33:07.000Z",
-    MerchantPaymentDetails: [],
-  },
-  // Add more merchant entries here
-];
+import { getAllMerchantDetailsThunk } from "@/redux/slices/merchantDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import MerchantPaymentDetailsTable from "./MerchantPaymentDetailsTable";
 
 export function TableDemo() {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(merchants.length / itemsPerPage);
+  const [merchants, setMerchants] = useState([]);
+  // const [selectedMerchantPaymentDetails, setSelectedMerchantPaymentDetails] =
+  //   useState(null);
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.merchantData);
 
-  const paginatedMerchants = merchants.slice(
+  // Fetch Data on component mount
+  useEffect(() => {
+    // calling api with thunk to store data in redux store
+    dispatch(getAllMerchantDetailsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (data) {
+      setMerchants(data.merchants || []);
+
+      setCurrentPage(1); // Reset pagination when new data is fetched
+    }
+  }, [data]);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.max(
+    1,
+    Math.ceil((merchants?.length || 0) / itemsPerPage)
+  );
+  const paginatedMerchants = merchants?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
+  if (loading) {
+    return <p className="text-center text-gray-500">Loading merchants...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">Error: {error}</p>;
+  }
   const handleEdit = (merchantId) => {
     console.log(`Edit merchant with ID: ${merchantId}`);
     // Implement edit functionality
@@ -130,6 +79,7 @@ export function TableDemo() {
         <TableHeader>
           <TableRow>
             <TableHead>Merchant ID</TableHead>
+            <TableHead>Payment Details</TableHead>
             <TableHead>IP Address</TableHead>
             <TableHead>First Name</TableHead>
             <TableHead>Last Name</TableHead>
@@ -154,6 +104,9 @@ export function TableDemo() {
           {paginatedMerchants.map((merchant) => (
             <TableRow key={merchant.merchantId}>
               <TableCell>{merchant.merchantId}</TableCell>
+              <TableCell>
+                <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
+              </TableCell>
               <TableCell>{merchant.ipAddress || "N/A"}</TableCell>
               <TableCell>{merchant.firstName || "N/A"}</TableCell>
               <TableCell>{merchant.lastName || "N/A"}</TableCell>
@@ -162,10 +115,10 @@ export function TableDemo() {
               <TableCell>{merchant.email}</TableCell>
               <TableCell>{merchant.phoneNumber || "N/A"}</TableCell>
               <TableCell>{merchant.country || "N/A"}</TableCell>
-              <TableCell>{merchant.verifyEmail ? "Yes" : "No"}</TableCell>
-              <TableCell>{merchant.otp || "N/A"}</TableCell>
-              <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>
-              <TableCell>{merchant.businessName || "N/A"}</TableCell>
+              <TableCell>{merchant.otp || "N/A"}</TableCell>{" "}
+              <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>{" "}
+              <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "}
+              <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "}
               <TableCell>{merchant.businessType || "N/A"}</TableCell>
               <TableCell>{merchant.status}</TableCell>
               <TableCell>

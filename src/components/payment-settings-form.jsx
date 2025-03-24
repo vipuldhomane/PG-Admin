@@ -19,6 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import ViewService from "@/services/ViewService";
+import toast from "react-hot-toast";
+import { getAllMerchantDetailsThunk } from "@/redux/slices/merchantDataSlice";
 
 const formSchema = z.object({
   payinCharge: z.number().min(0).max(100),
@@ -31,13 +36,16 @@ const formSchema = z.object({
   status: z.boolean(),
 });
 
-export function PaymentSettingsForm({ onSubmit }) {
+export function PaymentSettingsForm({ merchantId, paymentId }) {
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const dispatch = useDispatch();
+  const { merchants } = useSelector((state) => state.merchantData.data);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       payinCharge: 2.5,
       payinStatus: "active",
-      payinVendor: 123,
+      payinVendor: "payU",
       payinLimit: 5000,
       payoutCharge: 1.5,
       payoutStatus: "inactive",
@@ -45,6 +53,51 @@ export function PaymentSettingsForm({ onSubmit }) {
       status: true,
     },
   });
+
+  const { setValue } = form;
+
+  // Effect to update form fields when merchant data changes
+  useEffect(() => {
+    if (merchants.length > 0 && merchantId) {
+      const merchant = merchants.find(
+        (m) => m.merchantId === Number(merchantId)
+      );
+
+      if (merchant) {
+        const details = merchant.MerchantPaymentDetails[0] || null;
+        setPaymentDetails(details);
+
+        if (details) {
+          setValue("payinCharge", details.payinCharge ?? 2.5);
+          setValue("payinStatus", details.payinStatus ?? "active");
+          setValue("payinVendor", details.payinVendor ?? "payu");
+          setValue("payinLimit", details.payinLimit ?? 5000);
+          setValue("payoutCharge", details.payoutCharge ?? 1.5);
+          setValue("payoutStatus", details.payoutStatus ?? "inactive");
+          setValue("payoutLimit", details.payoutLimit ?? 10000);
+          setValue("status", details.status ?? true);
+        }
+      }
+    }
+  }, [merchants, merchantId, setValue]);
+
+  // Submit handler to call the API
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form Data:", data); // Log form data
+      const response = await ViewService.updateMerchantPaymentDetails(
+        merchantId,
+        data
+      );
+      dispatch(getAllMerchantDetailsThunk());
+      toast.success("Payment settings updated successfully!");
+      // Example API call using Axios
+
+      // console.log("API Response:", response);
+    } catch (error) {
+      console.error("Error calling API:", error);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -194,7 +247,7 @@ export function PaymentSettingsForm({ onSubmit }) {
           render={({ field }) => (
             <FormItem className="flex items-center">
               <FormLabel className="w-1/3">Status</FormLabel>
-              <FormControl className="w-2/3">
+              <FormControl className="">
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
