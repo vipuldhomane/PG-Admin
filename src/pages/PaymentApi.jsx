@@ -1,11 +1,10 @@
-import { TableDemo } from "@/components/merchantTable";
-
-const Merchants = () => {
+const PaymentAPI = () => {
   return (
     <div className="container mx-auto p-4 border border-gray-300 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg min-h-screen">
-      <TableDemo />
+      <h1>PaymentAPI</h1>
+      {/* <PaymentSettingsModal /> */}
     </div>
   );
 };
 
-export default Merchants;
+export default PaymentAPI;
