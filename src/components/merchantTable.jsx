@@ -39,7 +39,7 @@ export function TableDemo() {
 
   useEffect(() => {
     if (data) {
-      setMerchants(data.merchants || []);
+      setMerchants(data?.merchants || []);
 
       setCurrentPage(1); // Reset pagination when new data is fetched
     }
@@ -72,6 +72,44 @@ export function TableDemo() {
     // Implement delete functionality
   };
 
+  const sampledata = {
+    merchantId: 7,
+    ipAddress: "172.29.64.1",
+    firstName: "Vipul",
+    lastName: "D",
+    username: "16213124988",
+    email: "vipultechdev@gmail.com",
+    phoneNumber: "9595959595",
+    country: "India",
+    verifyEmail: true,
+    businessName: "Vipul's Tech",
+    businessType: "IT Services",
+    status: "unverified",
+    MerchantPaymentDetails: [
+      {
+        merchantId: 7,
+        payinCharge: 0,
+        payinStatus: "active",
+        payinVendor: "10",
+        payinType: "provider",
+        payoutCharge: 0,
+        payoutStatus: "active",
+        payoutVendor: null,
+        payoutType: "method",
+        userType: "merchant",
+        settlement: "midnight",
+        source: "sharkpe",
+        payoutLimit: 0,
+        payinLimit: 0,
+        minimumPayin: 100,
+        minimumPayout: 100,
+        cryptoWalletAmount: 0,
+        cryptoWalletHoldAmount: 0,
+        deeplink: false,
+        status: "1",
+      },
+    ],
+  };
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -79,7 +117,7 @@ export function TableDemo() {
         <TableHeader>
           <TableRow>
             <TableHead>Merchant ID</TableHead>
-            <TableHead>Payment Details</TableHead>
+
             <TableHead>IP Address</TableHead>
             <TableHead>First Name</TableHead>
             <TableHead>Last Name</TableHead>
@@ -89,24 +127,22 @@ export function TableDemo() {
             <TableHead>Phone Number</TableHead>
             <TableHead>Country</TableHead>
             <TableHead>Verify Email</TableHead>
-            <TableHead>OTP</TableHead>
-            <TableHead>Token</TableHead>
+            {/* <TableHead>OTP</TableHead>
+            <TableHead>Token</TableHead> */}
             <TableHead>Business Name</TableHead>
             <TableHead>Business Type</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Updated At</TableHead>
             <TableHead>Payment Details</TableHead>
-            <TableHead>Actions</TableHead>
+            {/* <TableHead>Created At</TableHead>
+            <TableHead>Updated At</TableHead>
+            <TableHead>Payment Details</TableHead> */}
+            {/* <TableHead>Actions</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedMerchants.map((merchant) => (
             <TableRow key={merchant.merchantId}>
               <TableCell>{merchant.merchantId}</TableCell>
-              <TableCell>
-                <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
-              </TableCell>
               <TableCell>{merchant.ipAddress || "N/A"}</TableCell>
               <TableCell>{merchant.firstName || "N/A"}</TableCell>
               <TableCell>{merchant.lastName || "N/A"}</TableCell>
@@ -115,20 +151,23 @@ export function TableDemo() {
               <TableCell>{merchant.email}</TableCell>
               <TableCell>{merchant.phoneNumber || "N/A"}</TableCell>
               <TableCell>{merchant.country || "N/A"}</TableCell>
-              <TableCell>{merchant.otp || "N/A"}</TableCell>{" "}
-              <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>{" "}
+              {/* <TableCell>{merchant.otp || "N/A"}</TableCell>{" "}
+              <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>{" "} */}
               <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "}
               <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "}
               <TableCell>{merchant.businessType || "N/A"}</TableCell>
               <TableCell>{merchant.status}</TableCell>
               <TableCell>
+                <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
+              </TableCell>
+              {/* <TableCell>
                 {new Date(merchant.createdAt).toLocaleString()}
               </TableCell>
               <TableCell>
                 {new Date(merchant.updatedAt).toLocaleString()}
-              </TableCell>
-              <TableCell>{merchant.MerchantPaymentDetails.length}</TableCell>
-              <TableCell>
+              </TableCell> */}
+              {/* <TableCell>{merchant.MerchantPaymentDetails.length}</TableCell> */}
+              {/* <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-8 w-8 p-0">
@@ -139,9 +178,11 @@ export function TableDemo() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
-                      onClick={() => handleEdit(merchant.merchantId)}
+                    // onClick={() => handleEdit(merchant.merchantId)}
                     >
-                      Edit
+                      <MerchantPaymentDetailsTable
+                        merchantId={merchant.merchantId}
+                      />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
@@ -151,7 +192,7 @@ export function TableDemo() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>

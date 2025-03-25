@@ -21,7 +21,9 @@ export function PaymentSettingsModal({ merchantId, paymentId }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Open Payment Settings</Button>
+        <Button className="bg-red-600 text-white font-bold" variant="outline">
+          Edit Settings
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

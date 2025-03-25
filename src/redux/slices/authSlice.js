@@ -36,6 +36,7 @@ const authSlice = createSlice({
     user: "",
     loading: false,
     error: "",
+    data: "",
   },
   reducers: {},
   extraReducers: (builder) => {

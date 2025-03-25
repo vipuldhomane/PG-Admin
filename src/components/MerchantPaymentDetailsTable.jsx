@@ -85,7 +85,7 @@ const MerchantPaymentDetailsTable = ({ merchantId }) => {
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <Button className="bg-blue-500" onClick={() => setIsOpen(true)}>
-            View Payment Details
+            Payment Details
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
