@@ -72,44 +72,6 @@ export function TableDemo() {
     // Implement delete functionality
   };
 
-  const sampledata = {
-    merchantId: 7,
-    ipAddress: "172.29.64.1",
-    firstName: "Vipul",
-    lastName: "D",
-    username: "16213124988",
-    email: "vipultechdev@gmail.com",
-    phoneNumber: "9595959595",
-    country: "India",
-    verifyEmail: true,
-    businessName: "Vipul's Tech",
-    businessType: "IT Services",
-    status: "unverified",
-    MerchantPaymentDetails: [
-      {
-        merchantId: 7,
-        payinCharge: 0,
-        payinStatus: "active",
-        payinVendor: "10",
-        payinType: "provider",
-        payoutCharge: 0,
-        payoutStatus: "active",
-        payoutVendor: null,
-        payoutType: "method",
-        userType: "merchant",
-        settlement: "midnight",
-        source: "sharkpe",
-        payoutLimit: 0,
-        payinLimit: 0,
-        minimumPayin: 100,
-        minimumPayout: 100,
-        cryptoWalletAmount: 0,
-        cryptoWalletHoldAmount: 0,
-        deeplink: false,
-        status: "1",
-      },
-    ],
-  };
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -130,8 +92,8 @@ export function TableDemo() {
             {/* <TableHead>OTP</TableHead>
             <TableHead>Token</TableHead> */}
             <TableHead>Business Name</TableHead>
-            <TableHead>Business Type</TableHead>
-            <TableHead>Status</TableHead>
+            {/* <TableHead>Business Type</TableHead> */}
+            {/* <TableHead>Status</TableHead> */}
             <TableHead>Payment Details</TableHead>
             {/* <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
@@ -154,9 +116,9 @@ export function TableDemo() {
               {/* <TableCell>{merchant.otp || "N/A"}</TableCell>{" "}
               <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>{" "} */}
               <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "}
-              <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "}
+              {/* <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "} */}
               <TableCell>{merchant.businessType || "N/A"}</TableCell>
-              <TableCell>{merchant.status}</TableCell>
+              {/* <TableCell>{merchant.status}</TableCell> */}
               <TableCell>
                 <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
               </TableCell>
