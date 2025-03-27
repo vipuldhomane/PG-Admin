@@ -88,11 +88,11 @@ export function TableDemo() {
             <TableHead>Email</TableHead>
             <TableHead>Phone Number</TableHead>
             <TableHead>Country</TableHead>
-            <TableHead>Verify Email</TableHead>
+            {/* <TableHead>Verify Email</TableHead> */}
             {/* <TableHead>OTP</TableHead>
             <TableHead>Token</TableHead> */}
             <TableHead>Business Name</TableHead>
-            {/* <TableHead>Business Type</TableHead> */}
+            <TableHead>Business Type</TableHead>
             {/* <TableHead>Status</TableHead> */}
             <TableHead>Payment Details</TableHead>
             {/* <TableHead>Created At</TableHead>

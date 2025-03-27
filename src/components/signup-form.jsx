@@ -15,6 +15,9 @@ export function SignUpForm({ className, ...props }) {
     email: "",
     password: "",
     confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
   });
 
   const [errors, setErrors] = useState({});
