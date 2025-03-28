@@ -43,7 +43,7 @@ const Navbar = ({ onMenuClick }) => {
             <User className="h-5 w-5 text-gray-700 dark:text-gray-300" />
           </div>
           <span className="hidden md:inline text-sm font-medium text-gray-900 dark:text-gray-100">
-            Kurmato Admin
+            Vyaparlay Admin
           </span>
 
           <button
