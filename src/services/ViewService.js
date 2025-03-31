@@ -23,10 +23,12 @@ ViewService.updateMerchantPaymentDetails = async function (id, data) {
 };
 
 // Get Dashborad data
-ViewService.dashboardAnalytics = async function (id, data) {
+ViewService.dashboardAnalytics = async function (data) {
+  console.log(data);
+
   return fetch({
     url: `${API_BASE_URL}/admin_dashboard/dashboard_analytics_payin`,
-    method: "get",
+    method: "put",
     data: data,
   });
 };
