@@ -93,7 +93,7 @@ export function TableDemo() {
             <TableHead>Token</TableHead> */}
             <TableHead>Business Name</TableHead>
             <TableHead>Business Type</TableHead>
-            {/* <TableHead>Status</TableHead> */}
+            <TableHead>Status</TableHead>
             <TableHead>Payment Details</TableHead>
             {/* <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
@@ -118,7 +118,7 @@ export function TableDemo() {
               <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "}
               {/* <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "} */}
               <TableCell>{merchant.businessType || "N/A"}</TableCell>
-              {/* <TableCell>{merchant.status}</TableCell> */}
+              <TableCell>{merchant.status}</TableCell>
               <TableCell>
                 <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
               </TableCell>

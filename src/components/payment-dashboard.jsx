@@ -131,24 +131,24 @@ export function PaymentDashboard() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <DashboardCard
-          title="Total Transaction Amount"
+          title="Total PayIN"
           value={`₹${dashboardData.walletBalance.toFixed(2)}`}
           tooltip="Total amount of all transactions"
           isLoading={isLoading}
         />
-        {/* <DashboardCard
-          title="Success Rate"
-          value={`${dashboardData.successRate}%`}
+        <DashboardCard
+          title="Total PayOut"
+          value={`₹${dashboardData.successRate.toFixed(2)}`}
           tooltip="Percentage of successful transactions"
           isLoading={isLoading}
         />
         <DashboardCard
-          title="Avg. Transaction Size"
-          value={`₹${dashboardData.avgTransactionSize}`}
+          title="Settlement Amount"
+          value={`₹${dashboardData.avgTransactionSize.toFixed(2)}`}
           tooltip="Average amount per transaction"
           isLoading={isLoading}
         />
-        <DashboardCard
+        {/* <DashboardCard
           title="Preferred Payment Mode"
           value={dashboardData.preferredPaymentMode}
           tooltip="Most used payment method"

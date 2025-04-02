@@ -1,6 +1,4 @@
 import { PaymentDashboard } from "@/components/payment-dashboard";
-import { FlipText } from "@/components/ui/flip-text";
-import React from "react";
 
 export const AdminDashboard = () => {
   return (

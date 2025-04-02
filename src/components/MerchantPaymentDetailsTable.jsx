@@ -40,20 +40,6 @@ const MerchantPaymentDetailsTable = ({ merchantId }) => {
     // console.log(paymentDetails?.MerchantPaymentDetails_Id);
   }, [merchants, merchantId]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await ViewService.getMerchantPaymentDetails()
-  //       if (response && response.MerchantPaymentDetails && response.MerchantPaymentDetails.length > 0) {
-  //         setPaymentDetails(response.MerchantPaymentDetails[0])
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching merchant payment details:", error)
-  //     }
-  //   }
-  //   fetchData()
-  // }, [])
-
   const handleOpenChange = (open) => {
     // Only allow closing via the close button
     if (!open) return;
@@ -147,16 +133,16 @@ const MerchantPaymentDetailsTable = ({ merchantId }) => {
       </Dialog>
 
       {/* Placeholder for Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        {/* <DialogContent>
+      {/* <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Merchant Payment Details</DialogTitle>
           </DialogHeader>
 
           <p>Your edit form content goes here.</p>
           <Button onClick={() => setIsEditDialogOpen(false)}>Close</Button>
-        </DialogContent> */}
-      </Dialog>
+        </DialogContent>
+      </Dialog> */}
     </>
   );
 };
