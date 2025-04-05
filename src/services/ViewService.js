@@ -22,12 +22,26 @@ ViewService.updateMerchantPaymentDetails = async function (id, data) {
   });
 };
 
-// Get Dashborad data
-ViewService.dashboardAnalytics = async function (data) {
-  // console.log(data);
-
+// Get payin data
+ViewService.dashboardAnalyticsPayin = async function (data) {
   return fetch({
     url: `${API_BASE_URL}/admin_dashboard/dashboard_analytics_payin`,
+    method: "put",
+    data: data,
+  });
+};
+// Get payout data
+ViewService.dashboardAnalyticsPayout = async function (data) {
+  return fetch({
+    url: `${API_BASE_URL}/admin_dashboard/getPayoutSumByDate`,
+    method: "put",
+    data: data,
+  });
+};
+// Get PayIn table
+ViewService.getAllTransactions = async function (data) {
+  return fetch({
+    url: `${API_BASE_URL}/admin-routes/getAllTransactions`,
     method: "put",
     data: data,
   });

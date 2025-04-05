@@ -84,11 +84,8 @@ export function PaymentDashboard() {
   const [date, setDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState({
-    walletBalance: 0,
-    totalTransactions: 0,
-    successRate: 0,
-    avgTransactionSize: 0,
-    preferredPaymentMode: "OTHERS",
+    payIn: 0,
+    payOut: 0,
   });
 
   const fetchData = useCallback(async () => {
@@ -97,13 +94,15 @@ export function PaymentDashboard() {
       const formattedDate = format(date, "yyyy-MM-dd");
       // console.log("Formatted Date:", formattedDate); // Debugging line
 
-      const res = await ViewService.dashboardAnalytics({ date: formattedDate });
+      const resPayin = await ViewService.dashboardAnalyticsPayin({
+        date: formattedDate,
+      });
+      const respayout = await ViewService.dashboardAnalyticsPayout({
+        date: formattedDate,
+      });
       setDashboardData({
-        walletBalance: res?.totalPayin || 0,
-        totalTransactions: res?.totalTransactions || 0,
-        successRate: res?.successRate || 0,
-        avgTransactionSize: res?.avgTransactionSize || 0,
-        preferredPaymentMode: res?.preferredPaymentMode || "OTHERS",
+        payIn: resPayin?.totalPayin || 0,
+        payOut: respayout?.totalPayout || 0,
       });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -132,19 +131,20 @@ export function PaymentDashboard() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <DashboardCard
           title="Total PayIN"
-          value={`₹${dashboardData.walletBalance.toFixed(2)}`}
+          value={`₹${dashboardData.payIn.toFixed(2)}`}
           tooltip="Total amount of all transactions"
           isLoading={isLoading}
         />
         <DashboardCard
           title="Total PayOut"
-          value={`₹${dashboardData.successRate.toFixed(2)}`}
+          value={`₹${dashboardData.payOut.toFixed(2)}`}
           tooltip="Percentage of successful transactions"
           isLoading={isLoading}
         />
         <DashboardCard
           title="Settlement Amount"
-          value={`₹${dashboardData.avgTransactionSize.toFixed(2)}`}
+          // value={`₹${dashboardData.avgTransactionSize.toFixed(2)}`}
+          value={`₹0.00`}
           tooltip="Average amount per transaction"
           isLoading={isLoading}
         />

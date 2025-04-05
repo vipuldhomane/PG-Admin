@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ViewService from "@/services/ViewService";
 
-export function PayInTable() {
+export function PayOutTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState([]);
   const [transactionType, setTransactionType] = useState("1"); // Default to successful transactions
@@ -20,7 +20,7 @@ export function PayInTable() {
     const fetchData = async () => {
       try {
         const response = await ViewService.getAllTransactions({
-          source: "payin",
+          source: "payout",
           status: transactionType,
         });
 

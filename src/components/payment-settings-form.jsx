@@ -28,7 +28,8 @@ import { getAllMerchantDetailsThunk } from "@/redux/slices/merchantDataSlice";
 const formSchema = z.object({
   payinCharge: z.number().min(0).max(100),
   payinStatus: z.enum(["active", "inactive"]),
-  payinVendor: z.number().int().positive(),
+  payinVendor: z.enum(["01-PayU", "02-PayPal", "03-Stripe"]),
+  // payinVendor: z.number().int().positive(),
   payinLimit: z.number().min(0),
   payoutCharge: z.number().min(0).max(100),
   payoutStatus: z.enum(["active", "inactive"]),
@@ -45,11 +46,11 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
     defaultValues: {
       payinCharge: 2.5,
       payinStatus: "active",
-      payinVendor: "payU",
-      payinLimit: 5000,
+      payinVendor: "01-PayU",
+      payinLimit: 500000000,
       payoutCharge: 1.5,
       payoutStatus: "inactive",
-      payoutLimit: 10000,
+      payoutLimit: 1000000,
       status: true,
     },
   });
@@ -57,6 +58,29 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
   const { setValue } = form;
 
   // Effect to update form fields when merchant data changes
+  // useEffect(() => {
+  //   if (merchants.length > 0 && merchantId) {
+  //     const merchant = merchants.find(
+  //       (m) => m.merchantId === Number(merchantId)
+  //     );
+
+  //     if (merchant) {
+  //       const details = merchant.MerchantPaymentDetails[0] || null;
+  //       setPaymentDetails(details);
+
+  //       if (details) {
+  //         setValue("payinCharge", details.payinCharge ?? 2.5);
+  //         setValue("payinStatus", details.payinStatus ?? "active");
+  //         setValue("payinVendor", details.payinVendor ?? "01-PayU");
+  //         setValue("payinLimit", details.payinLimit ?? 5000);
+  //         setValue("payoutCharge", details.payoutCharge ?? 1.5);
+  //         setValue("payoutStatus", details.payoutStatus ?? "inactive");
+  //         setValue("payoutLimit", details.payoutLimit ?? 10000);
+  //         setValue("status", details.status ?? true);
+  //       }
+  //     }
+  //   }
+  // }, [merchants, merchantId, setValue]);
   useEffect(() => {
     if (merchants.length > 0 && merchantId) {
       const merchant = merchants.find(
@@ -68,18 +92,20 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
         setPaymentDetails(details);
 
         if (details) {
-          setValue("payinCharge", details.payinCharge ?? 2.5);
-          setValue("payinStatus", details.payinStatus ?? "active");
-          setValue("payinVendor", details.payinVendor ?? "payu");
-          setValue("payinLimit", details.payinLimit ?? 5000);
-          setValue("payoutCharge", details.payoutCharge ?? 1.5);
-          setValue("payoutStatus", details.payoutStatus ?? "inactive");
-          setValue("payoutLimit", details.payoutLimit ?? 10000);
-          setValue("status", details.status ?? true);
+          form.reset({
+            payinCharge: details.payinCharge ?? 2.5,
+            payinStatus: details.payinStatus ?? "active",
+            payinVendor: details.payinVendor ?? "01-PayU",
+            payinLimit: details.payinLimit ?? 10000000000,
+            payoutCharge: details.payoutCharge ?? 1.5,
+            payoutStatus: details.payoutStatus ?? "inactive",
+            payoutLimit: details.payoutLimit ?? 100000,
+            status: Boolean(details.status ?? true),
+          });
         }
       }
     }
-  }, [merchants, merchantId, setValue]);
+  }, [merchants, merchantId, form]);
 
   // Submit handler to call the API
   const onSubmit = async (data) => {
@@ -143,7 +169,7 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="payinVendor"
           render={({ field }) => (
@@ -161,7 +187,30 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
               <FormMessage />
             </FormItem>
           )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="payinVendor"
+          render={({ field }) => (
+            <FormItem className="flex items-center">
+              <FormLabel className="w-1/3">Pay-in Vendor</FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
+                <FormControl className="w-2/3">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select pay-in vendor" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="01-PayU">PayU</SelectItem>
+                  <SelectItem value="02-PayPal">PayPal</SelectItem>
+                  <SelectItem value="03-Stripe">Stripe</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
         />
+
         <FormField
           control={form.control}
           name="payinLimit"
@@ -241,6 +290,22 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
             </FormItem>
           )}
         />
+        {/* <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem className="flex items-center">
+              <FormLabel className="w-1/3">Status</FormLabel>
+              <FormControl className="">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
         <FormField
           control={form.control}
           name="status"
@@ -257,6 +322,7 @@ export function PaymentSettingsForm({ merchantId, paymentId }) {
             </FormItem>
           )}
         />
+
         <Button type="submit" className="w-full">
           Submit
         </Button>

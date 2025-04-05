@@ -29,7 +29,7 @@ export function PaymentSettingsModal({ merchantId, paymentId }) {
         <DialogHeader>
           <DialogTitle>Payment Settings</DialogTitle>
           <DialogDescription>
-            Update your payment settings here. Click submit when you're done.
+            Update your payment settings here.
           </DialogDescription>
         </DialogHeader>
         <PaymentSettingsForm

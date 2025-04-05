@@ -80,20 +80,20 @@ export function TableDemo() {
           <TableRow>
             <TableHead>Merchant ID</TableHead>
 
-            <TableHead>IP Address</TableHead>
+            {/* <TableHead>IP Address</TableHead> */}
             <TableHead>First Name</TableHead>
             <TableHead>Last Name</TableHead>
             <TableHead>Username</TableHead>
             {/* <TableHead>Password</TableHead> */}
             <TableHead>Email</TableHead>
             <TableHead>Phone Number</TableHead>
-            <TableHead>Country</TableHead>
+            {/* <TableHead>Country</TableHead> */}
             {/* <TableHead>Verify Email</TableHead> */}
             {/* <TableHead>OTP</TableHead>
             <TableHead>Token</TableHead> */}
-            <TableHead>Business Name</TableHead>
-            <TableHead>Business Type</TableHead>
-            <TableHead>Status</TableHead>
+            {/* <TableHead>Business Name</TableHead> */}
+            {/* <TableHead>Business Type</TableHead> */}
+            <TableHead>Wallet Balance</TableHead>
             <TableHead>Payment Details</TableHead>
             {/* <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
@@ -105,20 +105,20 @@ export function TableDemo() {
           {paginatedMerchants.map((merchant) => (
             <TableRow key={merchant.merchantId}>
               <TableCell>{merchant.merchantId}</TableCell>
-              <TableCell>{merchant.ipAddress || "N/A"}</TableCell>
+              {/* <TableCell>{merchant.ipAddress || "N/A"}</TableCell> */}
               <TableCell>{merchant.firstName || "N/A"}</TableCell>
               <TableCell>{merchant.lastName || "N/A"}</TableCell>
               <TableCell>{merchant.username || "N/A"}</TableCell>
               {/* <TableCell>{"*".repeat(8)}</TableCell> */}
               <TableCell>{merchant.email}</TableCell>
               <TableCell>{merchant.phoneNumber || "N/A"}</TableCell>
-              <TableCell>{merchant.country || "N/A"}</TableCell>
+              {/* <TableCell>{merchant.country || "N/A"}</TableCell> */}
               {/* <TableCell>{merchant.otp || "N/A"}</TableCell>{" "}
               <TableCell>{merchant.token ? "Yes" : "No"}</TableCell>{" "} */}
-              <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "}
+              {/* <TableCell>{merchant.businessName || "N/A"}</TableCell>{" "} */}
               {/* <TableCell>{merchant.businessType || "N/A"}</TableCell>{" "} */}
-              <TableCell>{merchant.businessType || "N/A"}</TableCell>
-              <TableCell>{merchant.status}</TableCell>
+              {/* <TableCell>{merchant.businessType || "N/A"}</TableCell> */}
+              <TableCell>{merchant.walletBalance}</TableCell>
               <TableCell>
                 <MerchantPaymentDetailsTable merchantId={merchant.merchantId} />
               </TableCell>
